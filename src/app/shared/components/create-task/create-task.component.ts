@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {AlertService} from '../../services/alert.service';
 import {Task} from '../../interfaces';
 import {TasksService} from '../../services/tasks.service';
@@ -41,6 +41,30 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
           task: this.form.value.task,
           completed: false
         };
+
+        if (this.edit) {
+          task.id = this.edit.id;
+          this.tasksService.update(task).subscribe(() => {
+            this.form.reset();
+
+            this.home.currTasks = this.home.currTasks.map(o => {
+              if (o.id === task.id) {
+                return task;
+              }
+              return o;
+            });
+            this.home.compTasks = this.home.compTasks.map(o => {
+              if (o.id === task.id) {
+                return task;
+              }
+              return o;
+            });
+
+            this.alert.openSnackBar('Задача изменена', 'Скрыть');
+          });
+          return;
+        }
+
         this.tasksService.create(task).subscribe((newTask) => {
           this.form.reset();
           this.home.currTasks.unshift(newTask);
