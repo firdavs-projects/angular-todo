@@ -1,0 +1,33 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Меню</mat-toolbar>
+    <mat-nav-list>
+      <a *ngIf="auth.isAuthenticated()" mat-list-item routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}" routerLink="/">Мои задачи</a>
+      <a *ngIf="!auth.isAuthenticated()" mat-list-item routerLinkActive="active" routerLink="/login">Вход</a>
+      <a *ngIf="!auth.isAuthenticated()" mat-list-item routerLinkActive="active" routerLink="/register">Регистрация</a>
+      <a *ngIf="auth.isAuthenticated()" mat-list-item href="#" (click)="logout($event)">Выход</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Мои задачи</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

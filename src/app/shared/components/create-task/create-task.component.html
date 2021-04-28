@@ -1,0 +1,13 @@
+<form class="form" [formGroup]="form" (keydown)="keyDownFunction($event)">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Добавить задачу</mat-label>
+    <input matInput placeholder="Описание задачи" class="mat-input-element" type="text" formControlName="task">
+    <mat-error *ngIf="form.get('task').invalid">
+      <small *ngIf="form.get('task').errors.required">
+        Описание задачи не может быть пустым
+      </small>
+    </mat-error>
+  </mat-form-field>
+
+</form>

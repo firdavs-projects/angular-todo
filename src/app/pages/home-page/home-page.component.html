@@ -1,0 +1,71 @@
+<div class="content">
+  <mat-card>
+    <mat-card-header>Текущие задачи</mat-card-header>
+
+    <mat-selection-list *ngFor="let task of currTasks">
+      <mat-list-option [checkboxPosition]="'before'" (click)="setCompleted(task.id)">
+        <span>{{task.task}}</span>
+        <!--      <small matLine class="time">{{task.date | date:'HH:mm, dd.MM.YYYY'}}</small>-->
+      </mat-list-option>
+
+      <div class="buttons">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <!--        <button mat-menu-item>-->
+          <!--          <mat-icon color="accent">star</mat-icon>-->
+          <!--          <span>В избранное</span>-->
+          <!--        </button>-->
+          <button mat-menu-item (click)="edit(task.id,'currTasks')">
+            <mat-icon>edit</mat-icon>
+            <span>Редактировать</span>
+          </button>
+          <button mat-menu-item (click)="delete(task.id,'currTasks')">
+            <mat-icon>delete</mat-icon>
+            <span>Удалить</span>
+          </button>
+        </mat-menu>
+      </div>
+
+    </mat-selection-list>
+
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>Завершённые задачи</mat-card-header>
+    <mat-card-content>
+      <mat-selection-list *ngFor="let task of compTasks">
+        <mat-list-option [checkboxPosition]="'before'"
+                         (click)="setUncompleted(task.id)"
+                         [selected]="task.completed">
+          <span matLine [class.completed]="task.completed">{{task.task}}</span>
+          <small matLine class="time">{{task.date | date:'HH:mm, dd.MM.YYYY'}}</small>
+        </mat-list-option>
+
+        <div class="buttons">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <!--          <button mat-menu-item>-->
+            <!--            <mat-icon color="accent">star</mat-icon>-->
+            <!--            <span>В избранное</span>-->
+            <!--          </button>-->
+            <button mat-menu-item (click)="edit(task.id, 'compTasks')">
+              <mat-icon>edit</mat-icon>
+              <span>Редактировать</span>
+            </button>
+            <button mat-menu-item (click)="delete(task.id, 'compTasks')">
+              <mat-icon>delete</mat-icon>
+              <span>Удалить</span>
+            </button>
+          </mat-menu>
+        </div>
+
+      </mat-selection-list>
+    </mat-card-content>
+  </mat-card>
+</div>
+<app-create-task class="task-form"></app-create-task>
+<app-loader *ngIf="loading"></app-loader>

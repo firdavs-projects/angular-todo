@@ -1,0 +1,60 @@
+.card-section {
+  margin: 12px 0;
+}
+.content{
+  margin-bottom: 90px;
+}
+
+mat-card {
+  margin: 10px;
+  padding: 5px 0;
+}
+
+.card-margin {
+  margin: 0 12px;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.mat-list-item-content {
+  small {
+    font-size: 12px;
+  }
+
+  min-height: 100px;
+}
+
+mat-selection-list {
+  position: relative;
+
+  .buttons {
+    position: absolute;
+    right: 0;
+    top: 55%;
+    transform: translateY(-50%);
+  }
+}
+
+
+.task-form {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 10px;
+  background: white;
+
+}
+
+@media (min-width: 960px) {
+  .task-form {
+    left: 200px;
+  }
+}
