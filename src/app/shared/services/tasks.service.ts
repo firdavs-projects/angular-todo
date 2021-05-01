@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +12,13 @@ import {map} from 'rxjs/operators';
 export class TasksService {
   public editTask$ = new Subject<Task>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private auth: AuthService) {
   }
 
-  set(task: Task): void {
-    this.editTask$.next({...task});
+  set(task: Task | null): void {
+    this.editTask$.next(task);
   }
-
-  // get(): Task {
-  //   const task = this.edit;
-  //   this.edit = null;
-  //   return task;
-  // }
 
   create(task: Task): Observable<Task> {
     return this.http.post(`${environment.fbDbUrl}/tasks.json`, task)
@@ -31,7 +27,6 @@ export class TasksService {
           return {
             ...task,
             id: res.name,
-            date: new Date(task.date)
           };
         })
       );
@@ -46,22 +41,9 @@ export class TasksService {
             ...res[key],
             id: key,
             date: new Date(res[key].date)
-          }));
+          })).filter(t => t.owner === this.auth.email).sort((a, b) => b.date - a.date);
       }));
   }
-
-  // getById(id: string): Observable<Task> {
-  //   return this.http.get<Task>(`${environment.fbDbUrl}/tasks/${id}.json`)
-  //     .pipe(
-  //       map((task: Task) => {
-  //         return {
-  //           ...task,
-  //           id,
-  //           date: new Date(task.date)
-  //         };
-  //       })
-  //     );
-  // }
 
   update(task: Task): Observable<Task> {
     return this.http.patch<Task>(`${environment.fbDbUrl}/tasks/${task.id}.json`, task);

@@ -1,1 +1,46 @@
-<p>register-page works!</p>
+<form class="form" [formGroup]="form" (ngSubmit)="submit()">
+
+  <mat-card>
+
+    <h2>Регистрация</h2>
+
+    <mat-form-field class="field">
+      <mat-label>Введите ваш email</mat-label>
+      <input matInput placeholder="name@example.com" type="email" formControlName="email">
+      <mat-error *ngIf="form.get('email').invalid">
+        <small *ngIf="form.get('email').errors.required">
+          Email не может быть пустым
+        </small>
+        <small *ngIf="form.get('email').errors.email">
+          Введите корректный email
+        </small>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field">
+      <mat-label>Введите ваш пароль</mat-label>
+      <input matInput placeholder="Пароль" type="password" formControlName="password">
+      <mat-error *ngIf="form.get('password').invalid">
+        <small *ngIf="form.get('password').errors.required">
+          Пароль не может быть пустым
+        </small>
+        <small *ngIf="form.get('password').errors.minlength">
+          Пароль должен состоять минимум из {{form.get('password').errors.minlength.requiredLength}} символа(-ов).
+          Текущий
+          пароль
+          имеет {{form.get('password').errors.minlength.actualLength}} символа(-ов)
+        </small>
+      </mat-error>
+    </mat-form-field>
+
+    <button
+      [disabled]="form.invalid || submitted"
+      type="submit"
+      mat-raised-button color="primary"
+    >
+      Вход
+    </button>
+
+  </mat-card>
+
+</form>

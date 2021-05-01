@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "todo-angular-4beaa": {
+      "hosting": {
+        "todos": [
+          "todo-angular-4beaa"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "todo-angular-4beaa"
+  }
+}

@@ -1,19 +1,30 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, Subject, throwError} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {FbAuthResponse, User} from '../interfaces';
 import {catchError, tap} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {AlertService} from './alert.service';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  // tslint:disable-next-line:variable-name
-  constructor(private http: HttpClient, private alert: AlertService) {
+  constructor(private http: HttpClient,
+              private alert: AlertService,
+              public afAuth: AngularFireAuth,
+  ) {
+  }
+
+  get email(): string {
+    const expDate = new Date(localStorage.getItem('fb-token-exp'));
+    if (new Date() > expDate) {
+      this.logout();
+      return null;
+    }
+    return localStorage.getItem('fb-email');
   }
 
   get token(): string {
@@ -30,6 +41,7 @@ export class AuthService {
       const expDate = new Date(new Date().getTime() + +res.expiresIn * 1000);
       localStorage.setItem('fb-token', res.idToken);
       localStorage.setItem('fb-token-exp', expDate.toString());
+      localStorage.setItem('fb-email', res.email);
     } else {
       localStorage.clear();
     }
@@ -51,8 +63,19 @@ export class AuthService {
         // @ts-ignore
         this.alert.openSnackBar('Пользователь не найден', 'Скрыть');
         break;
+      case 'EMAIL_EXISTS':
+        // @ts-ignore
+        this.alert.openSnackBar('Пользователь уже зарегистрирован', 'Скрыть');
+        break;
     }
     return throwError(error);
+  }
+
+  signUp(email, password): Promise<any> {
+    return this.afAuth.createUserWithEmailAndPassword(email, password).catch(e => {
+      console.log(e);
+      return;
+    });
   }
 
   login(user: User): Observable<any> {

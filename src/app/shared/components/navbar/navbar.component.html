@@ -4,6 +4,8 @@
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Меню</mat-toolbar>
+    <mat-toolbar *ngIf="auth.isAuthenticated()">{{auth.email}}</mat-toolbar>
+
     <mat-nav-list>
       <a *ngIf="auth.isAuthenticated()" mat-list-item routerLinkActive="active"
          [routerLinkActiveOptions]="{exact: true}" routerLink="/">Мои задачи</a>

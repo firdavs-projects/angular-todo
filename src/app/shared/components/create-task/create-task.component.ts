@@ -5,6 +5,7 @@ import {Task} from '../../interfaces';
 import {TasksService} from '../../services/tasks.service';
 import {HomePageComponent} from '../../../pages/home-page/home-page.component';
 import {Subscription} from 'rxjs';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-create-task',
@@ -18,18 +19,19 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
 
   constructor(private alert: AlertService,
               private home: HomePageComponent,
-              private tasksService: TasksService) {
+              private tasksService: TasksService,
+              private auth: AuthService) {
   }
 
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      task: new FormControl(this.edit?.task || ''),
+      task: new FormControl(''),
     });
 
     this.eSub = this.tasksService.editTask$.subscribe(edit => {
       this.edit = edit;
-      this.form.setValue({task: this.edit.task});
+      this.form.setValue({task: this.edit?.task || ''});
     });
   }
 
@@ -39,13 +41,15 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
         const task: Task = {
           date: new Date(),
           task: this.form.value.task,
-          completed: false
+          completed: false,
+          owner: this.auth.email
         };
 
-        if (this.edit) {
+        if (!!this.edit) {
           task.id = this.edit.id;
+          task.owner = this.edit.owner;
+          task.completed = this.edit.completed;
           this.tasksService.update(task).subscribe(() => {
-            this.form.reset();
 
             this.home.currTasks = this.home.currTasks.map(o => {
               if (o.id === task.id) {
@@ -60,6 +64,8 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
               return o;
             });
 
+            this.form.reset();
+            this.tasksService.set(null);
             this.alert.openSnackBar('Задача изменена', 'Скрыть');
           });
           return;

@@ -57,18 +57,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.currTasks.unshift(currTask);
   }
 
-  ngOnDestroy(): void {
-    if (this.tSub) {
-      this.tSub.unsubscribe();
-    }
-    if (this.uSub) {
-      this.uSub.unsubscribe();
-    }
-    if (this.dSub) {
-      this.dSub.unsubscribe();
-    }
-  }
-
   delete(id: string, tasks: string): void {
     this.dSub = this.tasksService.remove(id).subscribe(() => {
       this[tasks] = this[tasks].filter(t => t.id !== id);
@@ -79,5 +67,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
   edit(id: string, tasks: string): void {
     const task = this[tasks].find(t => t.id === id);
     this.tasksService.set(task);
+  }
+
+  ngOnDestroy(): void {
+    if (this.tSub) {
+      this.tSub.unsubscribe();
+    }
+    if (this.uSub) {
+      this.uSub.unsubscribe();
+    }
+    if (this.dSub) {
+      this.dSub.unsubscribe();
+    }
   }
 }

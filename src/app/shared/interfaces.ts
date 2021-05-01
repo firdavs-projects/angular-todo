@@ -1,5 +1,6 @@
 export interface Task {
   id?: string;
+  owner: string;
   task: string;
   completed: boolean;
   date: Date;
@@ -14,6 +15,7 @@ export interface User {
 export interface FbAuthResponse {
   idToken: string;
   expiresIn: string;
+  email: string;
 }
 
 export interface FbCreateResponse {
