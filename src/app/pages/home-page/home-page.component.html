@@ -1,11 +1,12 @@
 <div class="content">
-  <mat-card>
-    <mat-card-header>Текущие задачи</mat-card-header>
 
+  <mat-card *ngIf="currTasks.length!==0; else tasks">
+    <mat-card-header>Текущие задачи</mat-card-header>
     <mat-selection-list *ngFor="let task of currTasks">
-      <mat-list-option [checkboxPosition]="'before'" (click)="setCompleted(task.id)">
+
+      <mat-list-option [checkboxPosition]="'before'"
+                       (click)="setCompleted(task.id)">
         <span>{{task.task}}</span>
-        <!--      <small matLine class="time">{{task.date | date:'HH:mm, dd.MM.YYYY'}}</small>-->
       </mat-list-option>
 
       <div class="buttons">
@@ -13,10 +14,6 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <!--        <button mat-menu-item>-->
-          <!--          <mat-icon color="accent">star</mat-icon>-->
-          <!--          <span>В избранное</span>-->
-          <!--        </button>-->
           <button mat-menu-item (click)="edit(task.id,'currTasks')">
             <mat-icon>edit</mat-icon>
             <span>Редактировать</span>
@@ -29,10 +26,15 @@
       </div>
 
     </mat-selection-list>
-
   </mat-card>
 
-  <mat-card>
+  <ng-template #tasks>
+    <mat-card>
+      <mat-card-header>Пока текущих задач нет :)</mat-card-header>
+    </mat-card>
+  </ng-template>
+
+  <mat-card *ngIf="compTasks.length!==0">
     <mat-card-header>Завершённые задачи</mat-card-header>
     <mat-card-content>
       <mat-selection-list *ngFor="let task of compTasks">

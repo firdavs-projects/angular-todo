@@ -58,7 +58,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     MatInputModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    LoaderComponent
+    LoaderComponent,
   ]
 })
 export class MaterialModule {

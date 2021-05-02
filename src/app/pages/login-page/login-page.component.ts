@@ -24,6 +24,9 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.auth.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
     this.route.queryParams.subscribe((params: Params) => {
       if (params.loginAgain) {
         this.message = 'Пожалуйста, выполните сначала вход';

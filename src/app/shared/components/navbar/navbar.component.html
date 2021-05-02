@@ -1,11 +1,12 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" autosize="true">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
                [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Меню</mat-toolbar>
-    <mat-toolbar *ngIf="auth.isAuthenticated()">{{auth.email}}</mat-toolbar>
-
+    <h2 *ngIf="auth.isAuthenticated()" style="word-wrap: break-word; font-weight: bold; padding-left: 16px"
+    > {{auth.email.split('@')[0]}}</h2>
+    <hr>
     <mat-nav-list>
       <a *ngIf="auth.isAuthenticated()" mat-list-item routerLinkActive="active"
          [routerLinkActiveOptions]="{exact: true}" routerLink="/">Мои задачи</a>
