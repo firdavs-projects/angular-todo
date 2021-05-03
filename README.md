@@ -2,9 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
 
-## Todos PWA application deployed at
+## Todos PWA application deployed on
 
-`https://todo-angular-4beaa.web.app/`
+[Google Firebase hosting](https://todo-angular-4beaa.web.app/)
 
 ## Development server
 
